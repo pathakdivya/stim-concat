@@ -1,0 +1,16 @@
+event_index,start_s,end_s,duration_s,event_type,trial,stimulus_id,description,source_file
+0,0.0,8.0,8.0,instruction,,,Opening instructions,
+1,8.0,9.0,1.0,fixation,1,,Fixation cross,
+2,9.0,12.0,3.0,instruction,1,sad_003,Default instruction,
+3,12.0,16.533,4.533,stimulus,1,sad_003,Video,sad_003.mp4
+4,16.533,17.533,1.0,fixation,2,,Fixation cross,
+5,17.533,20.533,3.0,instruction,2,neutral_006,Default instruction,
+6,20.533,24.533,4.0,stimulus,2,neutral_006,Image,neutral_006.png
+7,24.533,25.533,1.0,fixation,3,,Fixation cross,
+8,25.533,28.533,3.0,instruction,3,happy_002,Default instruction,
+9,28.533,30.533,2.0,stimulus,3,happy_002,Video,happy_002.mp4
+10,30.533,31.533,1.0,fixation,4,,Fixation cross,
+11,31.533,34.533,3.0,instruction,4,happy_001,Default instruction,
+12,34.533,37.733,3.2,stimulus,4,happy_001,Video,happy_001.mp4
+13,37.733,38.733,1.0,fixation,,,Fixation cross,
+14,38.733,43.733,5.0,instruction,,,Closing screen,
