@@ -218,7 +218,7 @@ FFmpeg version. Re-running with the same seed reproduces the sheet exactly.
 ## Development
 
 ```bash
-git clone https://github.com/stim-concat/stim-concat
+git clone [https://github.com/stim-concat/stim-concat](https://github.com/pathakdivya/stim-concat)
 cd stim-concat
 pip install -e ".[dev]"
 pytest                    # 99 tests; rendering tests skip if FFmpeg is absent
