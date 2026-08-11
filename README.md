@@ -1,6 +1,7 @@
 # stim-concat
 
-**Participant-specific concatenated stimulus videos with frame-exact timelines, for behavioural experiments. **
+![logo](1.png)
+**Participant-specific concatenated stimulus videos with frame-exact timelines, for behavioural experiments.**
 
 `stim-concat` turns a folder of stimulus files into one ready-to-play video per
 participant, together with an annotated timeline of every event in that video.
