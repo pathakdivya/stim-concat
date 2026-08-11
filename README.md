@@ -133,7 +133,7 @@ pattern you choose (customisable)
 
 ### Built-in algorithms
 
-| Key | What it guarantees |
+| Key | Description |
 | --- | --- |
 | `simple_random` | Independent draws; repeats possible |
 | `random_without_replacement` | Distinct stimuli within a participant |
