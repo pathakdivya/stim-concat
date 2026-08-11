@@ -5,7 +5,7 @@ Thanks for considering a contribution.
 ## Getting set up
 
 ```bash
-git clone https://github.com/stim-concat/stim-concat
+git clone [https://github.com/stim-concat/stim-concat](https://github.com/pathakdivya/stim-concat)
 cd stim-concat
 pip install -e ".[dev]"
 pytest
