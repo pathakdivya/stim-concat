@@ -1,6 +1,6 @@
 # stim-concat
 
-<img src="1.png" alt="logo" width="300">
+<img src="assets/1.png" alt="logo" width="300">
 
 **Participant-specific stimulus concatenator and assignment generator for behavioural experiments.**
 
@@ -192,6 +192,10 @@ event_index,start_s,end_s,duration_s,event_type,trial,stimulus_id,description,so
 
 For a worked example of cutting a continuous recording into per-stimulus
 epochs, see [`docs/timeline-alignment.md`](docs/timeline-alignment.md).
+
+# Settings page 
+
+<img src="assets/stim-concat-settings-page.png" alt="logo" width="300">
 
 ## Reproducibility
 
