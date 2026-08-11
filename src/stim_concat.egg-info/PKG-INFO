@@ -31,7 +31,9 @@ Dynamic: license-file
 
 # stim-concat
 
-**Participant-specific concatenated stimulus videos, with frame-exact timelines, for behavioural experiments.**
+<img src="assets/1.png" alt="logo" width="300">
+
+**Participant-specific stimulus concatenator and stimulus assignment generator for behavioural experiments.**
 
 `stim-concat` turns a folder of stimulus files into one ready-to-play video per
 participant, together with an annotated timeline of every event in that video.
@@ -39,12 +41,13 @@ Because the whole session is a single video file, an experiment can be run with
 *any* recording setup — eye-tracker, joystick or gamepad rating system,
 physiological amplifier, or a custom application — without needing stimulus
 presentation software to drive it. The timeline is what you use afterwards to
-align your recordings to the stimuli.
+align your recordings to the stimuli. It can be used to just generate a participant assignment sheets using pre-coded Design Algoriths like BIBD,
+Fully Balanced, Fully Random etc. 
 
 ```
 Stimulus folder
       ↓
-Assignment generator   ──►  participant_assignments.csv  (+ metadata sidecar)
+Assignment generator   ──►  participant_assignments.csv  (+ metadata) 
       ↓
 Stimulus builder
       ↓
@@ -53,10 +56,9 @@ Participant001.mp4  +  Participant001_timeline.csv / .xlsx  +  Participant001_se
 
 ---
 
-## Why the timeline can be trusted
+## Trusted Timelines
 
-The point of this tool is synchronisation, so the timeline is not an estimate.
-Three implementation choices make it exact:
+The point of this tool is synchronisation, so the timeline are exactly aligned:
 
 1. **Durations are snapped to whole frames** before anything is rendered, so a
    15.372 s clip at 30 fps becomes exactly 461 frames.
@@ -69,6 +71,17 @@ Three implementation choices make it exact:
    once, at the join.
 
 The test suite asserts this: `_video_frames(output) == round(timeline.duration * fps)`.
+
+## Testing Data
+
+You can use any dummy file repository or these websites to download testing data according to your requirements - 
+1) https://file-examples.com/
+2) https://filesamples.com/
+3) https://getsamplefiles.com/
+
+!! Supported inputs are video (`.mp4 .mov .avi .mkv .m4v .webm .mpg .wmv`), images
+(`.jpg .png .bmp .tif .webp .gif`), audio (`.mp3 .wav .m4a .aac .flac .ogg`) and
+text (`.txt .md`).
 
 ## Install
 
@@ -146,7 +159,7 @@ register_format(".mxf", "video")
 
 Stimulus IDs come from the filename via a regular expression, so
 `clip_070_sad.mp4` can yield `clip_070_sad`, `070` or `sad` depending on the
-pattern you choose.
+pattern you choose (customisable) 
 
 ### Built-in algorithms
 
@@ -222,9 +235,13 @@ event_index,start_s,end_s,duration_s,event_type,trial,stimulus_id,description,so
 For a worked example of cutting a continuous recording into per-stimulus
 epochs, see [`docs/timeline-alignment.md`](docs/timeline-alignment.md).
 
+# Settings page 
+
+<img src="assets/stim-concat-settings-page.png" alt="logo" width="300">
+
 ## Reproducibility
 
-A study can be reconstructed from two files. The assignment metadata sidecar
+A study can be reconstructed from two files. The assignment metadata
 holds the algorithm, seed, parameters, the exact script source and a fingerprint
 of the stimulus pool; `*_settings.json` holds every rendering parameter plus the
 FFmpeg version. Re-running with the same seed reproduces the sheet exactly.
