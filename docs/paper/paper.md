@@ -1,12 +1,11 @@
 ---
-title: 'stim-concat: participant-specific concatenated stimulus videos with frame-exact timelines for behavioural experiments'
+title: 'stim-concat: participant-specific concatenated stimulus and stimulus assignment for behavioural experiments'
 tags:
   - Python
   - psychology
   - neuroscience
   - stimulus presentation
   - counterbalancing
-  - reproducibility
 authors:
   - name: "Divya Pathak"
     orcid: 0000-0001-6837-0700
