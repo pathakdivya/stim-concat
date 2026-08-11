@@ -1,0 +1,5 @@
+[console_scripts]
+stim-concat = stim_concat.cli:main
+
+[gui_scripts]
+stim-concat-gui = stim_concat.cli:cmd_gui

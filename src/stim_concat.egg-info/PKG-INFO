@@ -1,0 +1,255 @@
+Metadata-Version: 2.4
+Name: stim-concat
+Version: 0.1.0
+Summary: Participant-specific concatenated stimulus videos with frame-exact timelines for behavioural experiments
+Author: stim-concat contributors
+License: MIT
+Project-URL: Homepage, https://github.com/stim-concat/stim-concat
+Project-URL: Issues, https://github.com/stim-concat/stim-concat/issues
+Keywords: psychology,neuroscience,stimulus,experiment,ffmpeg,counterbalancing,eye-tracking
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Multimedia :: Video :: Conversion
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: imageio-ffmpeg>=0.4.9
+Requires-Dist: Pillow>=9.2
+Requires-Dist: openpyxl>=3.1
+Provides-Extra: dev
+Requires-Dist: pytest>=7; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: pyinstaller>=6.0; extra == "dev"
+Provides-Extra: analysis
+Requires-Dist: pandas>=1.5; extra == "analysis"
+Dynamic: license-file
+
+# stim-concat
+
+**Participant-specific concatenated stimulus videos, with frame-exact timelines, for behavioural experiments.**
+
+`stim-concat` turns a folder of stimulus files into one ready-to-play video per
+participant, together with an annotated timeline of every event in that video.
+Because the whole session is a single video file, an experiment can be run with
+*any* recording setup — eye-tracker, joystick or gamepad rating system,
+physiological amplifier, or a custom application — without needing stimulus
+presentation software to drive it. The timeline is what you use afterwards to
+align your recordings to the stimuli.
+
+```
+Stimulus folder
+      ↓
+Assignment generator   ──►  participant_assignments.csv  (+ metadata sidecar)
+      ↓
+Stimulus builder
+      ↓
+Participant001.mp4  +  Participant001_timeline.csv / .xlsx  +  Participant001_settings.json
+```
+
+---
+
+## Why the timeline can be trusted
+
+The point of this tool is synchronisation, so the timeline is not an estimate.
+Three implementation choices make it exact:
+
+1. **Durations are snapped to whole frames** before anything is rendered, so a
+   15.372 s clip at 30 fps becomes exactly 461 frames.
+2. **Every segment is pinned with `-frames:v N`.** An earlier version used `-t`
+   alone and accumulated four frames of drift (~133 ms) across a 44-second
+   build, because each segment rounded independently.
+3. **Intermediate segments carry uncompressed PCM audio** and are joined with a
+   stream copy. Lossy codecs pad to their own frame size (~21 ms for AAC), which
+   would desynchronise audio a little more with every segment; audio is encoded
+   once, at the join.
+
+The test suite asserts this: `_video_frames(output) == round(timeline.duration * fps)`.
+
+## Install
+
+```bash
+pip install stim-concat
+```
+
+Nothing else is required. FFmpeg is supplied by the `imageio-ffmpeg` wheel; a
+system FFmpeg is used instead when one is on `PATH`. Check an installation with:
+
+```bash
+stim-concat doctor
+```
+
+On Debian/Ubuntu the graphical wizard also needs Tk: `sudo apt install python3-tk`.
+The command line interface works without it.
+
+## Use
+
+### The wizard
+
+```bash
+stim-concat gui        # or just: stim-concat
+```
+
+Five pages: choose the stimulus folder → generate assignments → configure
+fixation, instructions, presentation and video → preview timelines and build →
+review the summary. Instruction and fixation screens are previewed live, exactly
+as they will be rendered.
+
+### The command line
+
+```bash
+stim-concat scan stimuli/
+stim-concat algorithms -v
+stim-concat assign stimuli/ -n 24 -k 8 --algorithm balanced_random --seed 42
+stim-concat preview participant_assignments.csv stimuli/ --participant P001
+stim-concat build participant_assignments.csv stimuli/ output/
+```
+
+Settings are a plain JSON file, so a build is fully scriptable:
+
+```bash
+stim-concat config -o settings.json      # write the defaults, then edit
+stim-concat build assignments.csv stimuli/ output/ --config settings.json
+```
+
+### As a library
+
+```python
+from stim_concat import scan_folder, run_algorithm, BuildConfig, build_all
+
+stimuli = scan_folder("stimuli/", id_pattern=r"(?P<id>\d+)")
+assignment = run_algorithm("bibd", stimuli.ids, 21, 5, seed=42)
+assignment.to_csv("participant_assignments.csv")
+
+config = BuildConfig()
+config.video.width, config.video.height = 1920, 1080
+config.timeline.trial_sequence = ["fixation", "instruction", "stimulus"]
+
+report = build_all(assignment, stimuli, config, "output/")
+print(report.describe())
+```
+
+## Stage 1 — assignment
+
+Supported inputs are video (`.mp4 .mov .avi .mkv .m4v .webm .mpg .wmv`), images
+(`.jpg .png .bmp .tif .webp .gif`), audio (`.mp3 .wav .m4a .aac .flac .ogg`) and
+text (`.txt .md`). Adding a format is one line:
+
+```python
+from stim_concat.core.scanner import register_format
+register_format(".mxf", "video")
+```
+
+Stimulus IDs come from the filename via a regular expression, so
+`clip_070_sad.mp4` can yield `clip_070_sad`, `070` or `sad` depending on the
+pattern you choose.
+
+### Built-in algorithms
+
+| Key | What it guarantees |
+| --- | --- |
+| `simple_random` | Independent draws; repeats possible |
+| `random_without_replacement` | Distinct stimuli within a participant |
+| `balanced_random` | Every stimulus used ⌊N/v⌋ or ⌈N/v⌉ times overall |
+| `block_randomisation` | Equal numbers from each condition; block order randomised |
+| `latin_square` | Each stimulus once per serial position; Williams option balances carry-over |
+| `bibd` | Equal replication *and* equal pair co-occurrence |
+| `constrained_pseudorandom` | Balanced, plus limits on category runs and position repeats |
+
+`bibd` reports honestly. An exact design exists only when `r = bk/v` and
+`λ = r(k−1)/(v−1)` are whole numbers; the search recovers known designs (the
+Fano plane, the projective plane of order 3) and otherwise says so and returns
+the most balanced near-design, with replication still exactly balanced.
+
+### The algorithm *is* the script
+
+Each algorithm is a standalone Python file, shown in an editor inside the
+application. What you read is what runs. Edit it, press Generate, and the edited
+source is stored in the sheet's metadata sidecar so the result stays
+reproducible. Any file defining
+
+```python
+def assign(stimuli, n_participants, n_per_participant, rng, params):
+    return [[...], ...]     # one list of stimulus IDs per participant
+```
+
+can be dropped into `~/.stim-concat/algorithms/` and appears in the list. Always
+draw from the supplied `rng`, never the global `random`, or seeds will not
+reproduce.
+
+> Running an algorithm executes Python, exactly as running an analysis script
+> does. Only run scripts you trust.
+
+## Stage 2 — building
+
+Per trial you choose the order of `fixation`, `instruction`, `stimulus` and
+`blank`; opening and closing screens wrap the session. Configurable: fixation
+duration, size, thickness, colour, background and position; instruction text,
+duration, font, size, colour, alignment and per-stimulus overrides; stimulus
+position (nine anchors plus pixel nudges), scaling (`contain`/`cover`/`stretch`/
+`none`), background colour, still-image duration; resolution, frame rate, codec,
+CRF or bitrate, preset, and audio codec/bitrate/sample rate/channels. Source
+audio is preserved by default.
+
+Instruction and fixation screens are drawn with Pillow rather than FFmpeg's
+`drawtext`, because many FFmpeg builds — including the static binaries inside
+`imageio-ffmpeg` — are compiled without libfreetype and have no `drawtext`
+filter at all. Drawing in Python also means text is wrapped by measured pixel
+width and shrunk if needed, so it never clips at unusual resolutions.
+
+### Outputs
+
+| File | Contents |
+| --- | --- |
+| `P001.mp4` | The concatenated session |
+| `P001_timeline.csv` | Every event: index, start, end, duration, type, trial, stimulus ID, description, source file |
+| `P001_timeline.xlsx` | The same, colour-coded by event type |
+| `P001_settings.json` | Full configuration, stimulus list, FFmpeg version, timestamp |
+| `build_summary.csv` / `.md` | Per-participant status across the whole build |
+
+```csv
+event_index,start_s,end_s,duration_s,event_type,trial,stimulus_id,description,source_file
+0,0.0,8.0,8.0,instruction,,,Opening instructions,
+1,8.0,9.0,1.0,fixation,1,,Fixation cross,
+2,9.0,12.0,3.0,instruction,1,070,Default instruction,
+3,12.0,27.372,15.372,stimulus,1,070,Video,clip_070.mp4
+```
+
+For a worked example of cutting a continuous recording into per-stimulus
+epochs, see [`docs/timeline-alignment.md`](docs/timeline-alignment.md).
+
+## Reproducibility
+
+A study can be reconstructed from two files. The assignment metadata sidecar
+holds the algorithm, seed, parameters, the exact script source and a fingerprint
+of the stimulus pool; `*_settings.json` holds every rendering parameter plus the
+FFmpeg version. Re-running with the same seed reproduces the sheet exactly.
+
+## Development
+
+```bash
+git clone https://github.com/stim-concat/stim-concat
+cd stim-concat
+pip install -e ".[dev]"
+pytest                    # 99 tests; rendering tests skip if FFmpeg is absent
+ruff check src tests
+```
+
+Layout: `core/` (scanner, config, screens, timeline, renderer, exporters,
+pipeline), `assignment/` (data model, registry, algorithm scripts), `gui/`
+(wizard shell, one module per page), `cli.py`. Assignment algorithms, timeline
+elements and exporters extend independently of one another.
+
+To build a standalone application: `pyinstaller packaging/stim-concat.spec`.
+
+## Citation
+
+If this software supports a publication, please cite it — see `CITATION.cff`.
+
+## Licence
+
+MIT. See `LICENSE`.

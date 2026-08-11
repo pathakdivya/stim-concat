@@ -1,0 +1,12 @@
+imageio-ffmpeg>=0.4.9
+Pillow>=9.2
+openpyxl>=3.1
+
+[analysis]
+pandas>=1.5
+
+[dev]
+pytest>=7
+pytest-cov
+ruff
+pyinstaller>=6.0
