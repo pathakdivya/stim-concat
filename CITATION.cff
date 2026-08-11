@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+title: "stim-concat: participant-specific concatenated stimulus videos with frame-exact timelines"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: "[Your surname]"
+    given-names: "[Your given name]"
+    affiliation: "[Your institution]"
+version: 0.1.0
+license: MIT
+repository-code: "https://github.com/stim-concat/stim-concat"
+keywords:
+  - behavioural experiments
+  - stimulus presentation
+  - counterbalancing
+  - eye-tracking
+  - reproducibility
