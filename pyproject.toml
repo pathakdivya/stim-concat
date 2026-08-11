@@ -9,7 +9,7 @@ description = "Participant-specific concatenated stimulus videos with frame-exac
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
-authors = [{ name = "stim-concat contributors" }]
+authors = [{ name = "Divya Pathak" }]
 keywords = ["psychology", "neuroscience", "stimulus", "experiment", "ffmpeg", "counterbalancing", "eye-tracking"]
 classifiers = [
   "Development Status :: 4 - Beta",
