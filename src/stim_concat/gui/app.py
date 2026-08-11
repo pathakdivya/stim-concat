@@ -44,21 +44,21 @@ class WizardApp(tk.Tk):
             )
         else:
             project_root = Path(__file__).resolve().parents[3]
-
             png_icon = project_root / "assets" / "1.png"
             ico_icon = (
                 Path(__file__).resolve().parent.parent
                 / "resources"
                 / "stim-concat.ico"
             )
-
+        # Main Tk icon: title bar + taskbar
         if png_icon.exists():
             try:
                 self._app_icon = tk.PhotoImage(file=str(png_icon))
                 self.iconphoto(True, self._app_icon)
             except tk.TclError:
                 pass
-
+          
+        # Windows ICO fallback
         if sys.platform == "win32" and ico_icon.exists():
             try:
                 self.iconbitmap(default=str(ico_icon))
