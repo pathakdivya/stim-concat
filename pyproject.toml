@@ -37,8 +37,8 @@ stim-concat = "stim_concat.cli:main"
 stim-concat-gui = "stim_concat.cli:cmd_gui"
 
 [project.urls]
-Homepage = "https://github.com/stim-concat/stim-concat"
-Issues = "https://github.com/stim-concat/stim-concat/issues"
+Homepage = "https://github.com/pathakdivya/stim-concat"
+Issues = "https://github.com/pathakdivya/stim-concat/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
