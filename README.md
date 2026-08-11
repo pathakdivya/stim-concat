@@ -41,6 +41,10 @@ The point of this tool is synchronisation, so the timeline are exactly aligned:
 
 The test suite asserts this: `_video_frames(output) == round(timeline.duration * fps)`.
 
+## Testing Data
+
+Please use File examples website to download testing data according to your requirements - https://file-examples.com/ 
+
 ## Install
 
 ```bash
