@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stim-concat"
+version = "0.1.0"
+description = "Participant-specific concatenated stimulus videos with frame-exact timelines for behavioural experiments"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "stim-concat contributors" }]
+keywords = ["psychology", "neuroscience", "stimulus", "experiment", "ffmpeg", "counterbalancing", "eye-tracking"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Multimedia :: Video :: Conversion",
+]
+dependencies = [
+  "imageio-ffmpeg>=0.4.9",   # ships a static FFmpeg so users install nothing else
+  "Pillow>=9.2",            # draws instruction and fixation screens
+  "openpyxl>=3.1",          # .xlsx timeline export
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "pytest-cov", "ruff", "pyinstaller>=6.0"]
+analysis = ["pandas>=1.5"]
+
+[project.scripts]
+stim-concat = "stim_concat.cli:main"
+
+[project.gui-scripts]
+stim-concat-gui = "stim_concat.cli:cmd_gui"
+
+[project.urls]
+Homepage = "https://github.com/stim-concat/stim-concat"
+Issues = "https://github.com/stim-concat/stim-concat/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+stim_concat = ["assignment/algorithms/*.py", "resources/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "C4", "UP", "RUF", "PLW"]
+ignore = [
+  "E501",     # long lines are handled case by case
+  "RUF012",   # ClassVar annotations are noise in small config dataclasses
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Algorithm scripts are shown to users in an editor; %-formatting keeps the
+# error messages readable at a glance and avoids nested-quote awkwardness.
+# Algorithm scripts are shown to users in an editor; %-formatting keeps the
+# messages readable, and LAST_NOTE is how a script reports back to the caller.
+"src/stim_concat/assignment/algorithms/*.py" = ["UP031", "PLW0603"]
+"tests/*" = ["PLW1510"]
