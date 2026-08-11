@@ -43,7 +43,14 @@ The test suite asserts this: `_video_frames(output) == round(timeline.duration *
 
 ## Testing Data
 
-Please use File examples website to download testing data according to your requirements - https://file-examples.com/ 
+You can use any dummy file repository or these websites to download testing data according to your requirements - 
+1) https://file-examples.com/
+2) https://filesamples.com/
+3) https://getsamplefiles.com/
+
+!! Supported inputs are video (`.mp4 .mov .avi .mkv .m4v .webm .mpg .wmv`), images
+(`.jpg .png .bmp .tif .webp .gif`), audio (`.mp3 .wav .m4a .aac .flac .ogg`) and
+text (`.txt .md`).
 
 ## Install
 
