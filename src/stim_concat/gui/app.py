@@ -57,7 +57,7 @@ class WizardApp(tk.Tk):
                 self.iconphoto(True, self._app_icon)
             except tk.TclError:
                 pass
-          
+
         # Windows ICO fallback
         if sys.platform == "win32" and ico_icon.exists():
             try:
