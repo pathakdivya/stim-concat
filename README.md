@@ -1,6 +1,6 @@
 # stim-concat
 
-<img src="1.png" alt="logo" width="120">
+<img src="1.png" alt="logo" width="300">
 
 **Participant-specific concatenated stimulus videos with frame-exact timelines, for behavioural experiments.**
 
