@@ -10,8 +10,9 @@ Because the whole session is a single video file, an experiment can be run with
 *any* recording setup — eye-tracker, joystick or gamepad rating system,
 physiological amplifier, or a custom application — without needing stimulus
 presentation software to drive it. The timeline is what you use afterwards to
-align your recordings to the stimuli. It can be used to just generate a participant assignment sheets using pre-coded Design Algoriths like BIBD,
-Fully Balanced, Fully Random etc. 
+align your recordings to the stimuli. 
+
+Alternatively, **stim-concat** can also be used independently as a participant-assignment generator as it comes with built-in algorithms including Balanced random Assignment, ransom sampling without replacement, Latin Squares, block randomisation, constrained pseudo-randomisation, and BIBD. Users can customise these existing algorithms or use their own code for other stimulus assignment algorithms. 
 
 ```
 Stimulus folder
@@ -49,7 +50,7 @@ You can use any dummy file repository or these websites to download testing data
 3) https://getsamplefiles.com/
 
 !! Supported inputs are video (`.mp4 .mov .avi .mkv .m4v .webm .mpg .wmv`), images
-(`.jpg .png .bmp .tif .webp .gif`), audio (`.mp3 .wav .m4a .aac .flac .ogg`) and
+(`.jpg .png .bmp .tif .webp .gif .jpeg`), audio (`.mp3 .wav .m4a .aac .flac .ogg`) and
 text (`.txt .md`).
 
 ## Install
@@ -118,7 +119,7 @@ print(report.describe())
 ## Stage 1 — assignment
 
 Supported inputs are video (`.mp4 .mov .avi .mkv .m4v .webm .mpg .wmv`), images
-(`.jpg .png .bmp .tif .webp .gif`), audio (`.mp3 .wav .m4a .aac .flac .ogg`) and
+(`.jpg .png .bmp .tif .webp .gif .jpeg`), audio (`.mp3 .wav .m4a .aac .flac .ogg`) and
 text (`.txt .md`). Adding a format is one line:
 
 ```python
