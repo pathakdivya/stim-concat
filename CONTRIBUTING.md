@@ -2,6 +2,17 @@
 
 Thanks for considering a contribution.
 
+## Testing Data
+
+You can use any dummy file repository or these websites to download testing data according to your requirements - 
+1) https://file-examples.com/
+2) https://filesamples.com/
+3) https://getsamplefiles.com/
+
+!! Supported inputs are video (`.mp4 .mov .avi .mkv .m4v .webm .mpg .wmv`), images
+(`.jpg .png .bmp .tif .webp .gif .jpeg`), audio (`.mp3 .wav .m4a .aac .flac .ogg`) and
+text (`.txt .md`).
+
 ## Getting set up
 
 ```bash
