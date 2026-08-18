@@ -8,8 +8,8 @@
 participant, together with an annotated timeline of every event in that video.
 Because the whole session is a single video file, an experiment can be run with
 *any* recording setup — eye-tracker, joystick or gamepad rating system,
-physiological amplifier, or a custom application — without needing stimulus
-presentation software to drive it. The timeline is what you use afterwards to
+physiological amplifier, or a custom application, without needing stimulus
+presentation software to deliver it. The timeline is what you use afterwards to
 align your recordings to the stimuli. 
 
 Alternatively, **stim-concat** can also be used independently as a participant-assignment generator as it comes with built-in algorithms including Balanced random Assignment, ransom sampling without replacement, Latin Squares, block randomisation, constrained pseudo-randomisation, and BIBD. Users can customise these existing algorithms or use their own code for other stimulus assignment algorithms. 
