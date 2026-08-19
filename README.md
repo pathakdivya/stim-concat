@@ -61,7 +61,7 @@ The command line interface works without it.
 
 ## Use
 
-### The wizard
+### Opening the wizard
 
 ```bash
 stim-concat gui        # or just: stim-concat
