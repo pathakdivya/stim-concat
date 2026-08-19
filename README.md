@@ -5,7 +5,8 @@
 **Participant-specific stimulus concatenator and stimulus assignment generator for behavioural experiments.**
 
 `stim-concat` turns a folder of stimulus files into one ready-to-play video per
-participant, together with an annotated timeline of every event in that video.
+participant, together with an annotated timeline of every event in that video. The 
+stimulus files can be interleaved with custom instructions or fixation crosses as required.
 Because the whole session is a single video file, an experiment can be run with
 *any* recording setup — eye-tracker, joystick or gamepad rating system,
 physiological amplifier, or a custom application, without needing stimulus
