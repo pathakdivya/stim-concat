@@ -2,7 +2,7 @@
 
 <img src="assets/1.png" alt="logo" width="300">
 
-**Participant-specific stimulus concatenator and stimulus assignment generator for behavioural experiments.**
+**Export your behavioral experiment as a ready-to-play video. Supports bulk exports!**
 
 `stim-concat` turns a folder of stimulus files into one ready-to-play video per
 participant, together with an annotated timeline of every event in that video. The 
