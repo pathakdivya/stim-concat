@@ -1,5 +1,6 @@
 # stim-concat
 [![DOI](https://zenodo.org/badge/1330536326.svg)](https://doi.org/10.5281/zenodo.22125606)
+
 <img src="assets/1.png" alt="logo" width="300">
 
 **Export your behavioral experiment as a ready-to-play video. Supports bulk exports!**
